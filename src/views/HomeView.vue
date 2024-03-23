@@ -1,18 +1,37 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="home">
+    <Shopping :cart="cart" @add-to-cart="addToCart" @remove-from-cart="removeFromCart" @navigate-to-login="navigateToLogin" />
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import Shopping from '@/components/ShoppingCart.vue';
 
 export default {
-  name: 'HomeView',
+  name: 'App',
   components: {
-    HelloWorld
+    Shopping
+  },
+  data() {
+    return {
+      cart: []
+    };
+  },
+  methods: {
+    addToCart(item) {
+      let existingItem = this.cart.find(i => i.id === item.id);
+      if (existingItem) {
+        existingItem.quantity++;
+      } else {
+        this.cart.push(item);
+      }
+    },
+    removeFromCart(index) {
+      this.cart.splice(index, 1);
+    },
+    navigateToLogin() {
+      this.$router.push({ name: 'login' });
+    }
   }
-}
+};
 </script>
